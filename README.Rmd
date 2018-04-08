@@ -12,13 +12,13 @@ This package literally consists of one function - a method for converting `lavaa
 
 ## Download and Install
 
-You can install `gglavaan` from [github](https://github.com/mattansb/tidylavaan) with:
+You can install `tidylavaan` from [github](https://github.com/mattansb/tidylavaan) with:
 
 ```R
 # install.packages("devtools")
 devtools::install_github("mattansb/tidylavaan")
 
-# or just load the single function in contains:
+# or just load the single function it contains:
 # source("https://raw.githubusercontent.com/mattansb/tidylavaan/master/R/tidylavaan.R")
 ```
 
@@ -59,7 +59,7 @@ fit <- sem(model, data = PoliticalDemocracy)
 
 ### Convert to `tbl_graph`
 
-Using `gglavaan` we can convert this object into a `tbl_graph` object:
+Using `tidylavaan` we can convert this object into a `tbl_graph` object:
 
 ```{r}
 library(tidygraph)
