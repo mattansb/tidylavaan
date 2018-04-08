@@ -7,7 +7,7 @@ This package literally consists of one function - a method for converting `lavaa
 Download and Install
 --------------------
 
-You can install `gglavaan` from [github](https://github.com/mattansb/gglavaan) with:
+You can install `gglavaan` from [github](https://github.com/mattansb/tidylavaan) with:
 
 ``` r
 # install.packages("devtools")
