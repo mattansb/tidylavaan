@@ -1,7 +1,7 @@
 Package: tidylavaan
 Type: Package
 Title: Method for importing lavaan output to tbl_graph
-Version: 1.0.0-0
+Version: 1.1.0-0
 Date: 2018-04-08
 Author: Mattan S. Ben Shachar
 Maintainer: Mattan S. Ben Shachar <matanshm@post.bgu.ac.il>

@@ -16,11 +16,11 @@
 #' @examples see README
 as_tbl_graph.lavaan <- function(object, standardize = TRUE) {
 
-  # if (standardize) {
+  if (standardize) {
   params <- standardizedSolution(object)
-  # } else {
-  #   params <- parameterEstimates(object)
-  # }
+  } else {
+    params <- parameterEstimates(object)
+  }
   params_tidy <- params %>%
     select(3,1,2,everything()) %>%
     mutate(

@@ -65,7 +65,7 @@ Using `tidylavaan` we can convert this object into a `tbl_graph` object:
 library(tidygraph)
 library(tidylavaan)
 
-graph_data <- as_tbl_graph(fit)
+graph_data <- as_tbl_graph(fit, standardize = TRUE)
 ```
 
 Wow, that was super hard. Let's see what we got.
