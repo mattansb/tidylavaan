@@ -1,16 +1,16 @@
 Package: tidylavaan
 Type: Package
 Title: Method for importing lavaan output to tbl_graph
-Version: 1.1.0-0
-Date: 2018-04-08
+Version: 1.2.0-0
+Date: 2019-09-03
 Author: Mattan S. Ben Shachar
 Maintainer: Mattan S. Ben Shachar <matanshm@post.bgu.ac.il>
 Depends: R (>= 3.4.3)
-Imports: lavaan, magrittr, dplyr, tidygraph
+Imports: lavaan, tidygraph
 License: 
 Description: This package literally consists of one fucntion
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Suggests: ggraph
 URL: https://github.com/mattansb/tidylavaan

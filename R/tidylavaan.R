@@ -3,55 +3,64 @@
 #' Method for importing lavaan output to tbl_graph
 #'
 #' @author Mattan S. Ben-Shachar
+#'
 #' @param object a lavaan object, returned from lavaan's sem/cfa functions.
 #' @param standardize should the edge coeffciants be standerdized. curretnyl only `TRUE` is supported.
+#' @param include_var should the variances be included?
+#' @param ... args passed to \code{standardizedSolution} or \code{parameterEstimates}
 #'
 #' @return a tbl_graph object that can further be processed with tidygraph, and plotted with ggraph.
 #' @export
 #' @import tidygraph
-#' @import magrittr
-#' @import dplyr
 #' @import lavaan
 #'
 #' @examples see README
-as_tbl_graph.lavaan <- function(object, standardize = TRUE) {
+as_tbl_graph.lavaan <- function(object, standardize = TRUE, include_var = FALSE, ...) {
+
+  op_type <- c(
+    "=~"  = "latent",
+    "~"   = "regression",
+    "~~"  = "covariance",
+    "~1"  = "intercept",
+    "|"   = "threshold",
+    "~*~" = "scale",
+    "<~"  = "latent (formative)"
+  )
+
+  rel_type <- c(
+    "=~" = "regression",
+    "~"  = "regression",
+    "<~" = "regression",
+    "~~" = "covariance"
+  )
+
 
   if (standardize) {
-  params <- standardizedSolution(object)
+    params <- lavaan::standardizedSolution(object, ...)
   } else {
-    params <- parameterEstimates(object)
+    params <- lavaan::parameterEstimates(object, ...)
   }
-  params_tidy <- params %>%
-    select(3,1,2,everything()) %>%
-    mutate(
-      relation_full = case_when(
-        op == "=~"  ~ "latent",
-        op == "~"   ~ "regression",
-        op == "~~"  ~ "covariance",
-        op == "~1"  ~ "intercept",
-        op == "|"   ~ "threshold",
-        op == "~*~" ~ "scale",
-        op == "<~"  ~ "latent (formative)",
-        TRUE        ~ NA_character_
-      ),
-      relation_type = case_when(
-        op %in% c("=~","~","<~") ~ "regression",
-        op == "~~"               ~ "covariance",
-        TRUE                     ~ NA_character_
-      ),
-      rhs2 = rhs,
-      rhs = ifelse(relation_full == "latent", lhs, rhs),
-      lhs = ifelse(relation_full == "latent", rhs2, lhs)
-    ) %>%
-    filter(!op %in% c("|","~1","~*~"),
-           rhs != lhs) %>%
-    select(-rhs2)
 
-  latent_nodes <- with(params_tidy,
-                       unique(rhs[relation_full=="latent"]))
 
-  graph <- params_tidy %>%
-    as_tbl_graph() %>%
-    activate(nodes) %>%
-    mutate(latent = name %in% latent_nodes)
+  params <- cbind(params[c(3, 1, 2)],
+                  params[-c(3, 1, 2)])
+
+  params$relation_full <- op_type[params$op]
+  params$relation_type <- rel_type[params$op]
+
+  params$rhs2 <- params$rhs
+  params$rhs <- ifelse(params$relation_full == "latent", params$lhs,  params$rhs)
+  params$lhs <- ifelse(params$relation_full == "latent", params$rhs2, params$lhs)
+  params$rhs2 <- NULL
+
+  params <- params[!params$op %in% c("|", "~1", "~*~"), ]
+  if (!include_var) params <- params[params$rhs != params$lhs, ]
+
+  latent_nodes <- unique(params$rhs[params$relation_full == "latent"])
+
+  tidygraph::mutate(
+    tidygraph::activate(tidygraph::as_tbl_graph(params),
+                        nodes),
+    latent = .data$name %in% latent_nodes
+  )
 }

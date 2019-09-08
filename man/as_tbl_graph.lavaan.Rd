@@ -4,12 +4,17 @@
 \alias{as_tbl_graph.lavaan}
 \title{Method for importing lavaan output to tbl_graph}
 \usage{
-\method{as_tbl_graph}{lavaan}(object, standardize = TRUE)
+\method{as_tbl_graph}{lavaan}(object, standardize = TRUE,
+  include_var = FALSE, ...)
 }
 \arguments{
 \item{object}{a lavaan object, returned from lavaan's sem/cfa functions.}
 
 \item{standardize}{should the edge coeffciants be standerdized. curretnyl only `TRUE` is supported.}
+
+\item{include_var}{should the variances be included?}
+
+\item{...}{args passed to \code{standardizedSolution} or \code{parameterEstimates}}
 }
 \value{
 a tbl_graph object that can further be processed with tidygraph, and plotted with ggraph.

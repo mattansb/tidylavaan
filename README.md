@@ -1,13 +1,13 @@
 
-tidylavaan
-==========
+# tidylavaan
 
-This package literally consists of one function - a method for converting `lavaan` objects into `tbl_graph` objects.
+This package literally consists of one function - a method for
+converting `lavaan` objects into `tbl_graph` objects.
 
-Download and Install
---------------------
+## Download and Install
 
-You can install `tidylavaan` from [github](https://github.com/mattansb/tidylavaan) with:
+You can install `tidylavaan` from
+[github](https://github.com/mattansb/tidylavaan) with:
 
 ``` r
 # install.packages("devtools")
@@ -17,23 +17,30 @@ devtools::install_github("mattansb/tidylavaan")
 # source("https://raw.githubusercontent.com/mattansb/tidylavaan/master/R/tidylavaan.R")
 ```
 
-These functions are meant for use alongside [`tidygraph`](https://CRAN.R-project.org/package=tidygraph) and [`ggraph`](https://CRAN.R-project.org/package=ggraph) (as seen bellow).
+These functions are meant for use alongside
+[`tidygraph`](https://CRAN.R-project.org/package=tidygraph) and
+[`ggraph`](https://CRAN.R-project.org/package=ggraph) (as seen bellow).
 
-You will also need:
-- [`lavaan`](https://cran.r-project.org/package=lavaan), obviously.
+You will also need:  
+\- [`lavaan`](https://cran.r-project.org/package=lavaan), obviously.
 
-Example
--------
+## Example
 
-In this example we will try to recreate the plot in the main page of [`lavaan`'s website](http://lavaan.ugent.be/):
+In this example we will try to recreate the plot in the main page of
+[`lavaan`’s website](http://lavaan.ugent.be/):
 
-![lavaan sample sem path](http://lavaan.ugent.be/tutorial/figure/sem.png)
+![lavaan sample sem
+path](http://lavaan.ugent.be/tutorial/figure/sem.png)
 
-Let's first fit the model:
+Let’s first fit the model:
 
 ``` r
 library(lavaan)
+```
 
+    ## Warning: package 'lavaan' was built under R version 3.6.1
+
+``` r
 model <- '
    # latent variables
      ind60 =~ x1 + x2 + x3
@@ -60,10 +67,10 @@ Using `tidylavaan` we can convert this object into a `tbl_graph` object:
 library(tidygraph)
 library(tidylavaan)
 
-graph_data <- as_tbl_graph(fit)
+graph_data <- as_tbl_graph(fit, standardize = TRUE)
 ```
 
-Wow, that was super hard. Let's see what we got.
+Wow, that was super hard. Let’s see what we got.
 
 ``` r
 print(graph_data)
@@ -84,21 +91,27 @@ print(graph_data)
     ## 6 y6    FALSE 
     ## # ... with 8 more rows
     ## #
-    ## # Edge Data: 20 x 9
-    ##    from    to op    est.std     se     z pvalue relation_full
-    ##   <int> <int> <chr>   <dbl>  <dbl> <dbl>  <dbl> <chr>        
-    ## 1     1     9 =~      0.920 0.0230  40.0     0. latent       
-    ## 2     1    10 =~      0.973 0.0165  59.1     0. latent       
-    ## 3     1    11 =~      0.872 0.0311  28.1     0. latent       
-    ## # ... with 17 more rows, and 1 more variable: relation_type <chr>
+    ## # Edge Data: 20 x 11
+    ##    from    to op    est.std     se     z pvalue ci.lower ci.upper
+    ##   <int> <int> <chr>   <dbl>  <dbl> <dbl>  <dbl>    <dbl>    <dbl>
+    ## 1     1     9 =~      0.920 0.0230  40.0      0    0.875    0.965
+    ## 2     1    10 =~      0.973 0.0165  59.1      0    0.941    1.01 
+    ## 3     1    11 =~      0.872 0.0311  28.1      0    0.811    0.933
+    ## # ... with 17 more rows, and 2 more variables: relation_full <chr>,
+    ## #   relation_type <chr>
 
 ### Ploting Path Diagram
 
-Let's plot it with `ggraph` ([learn more about plotting nodes and edges](https://github.com/thomasp85/ggraph)).
+Let’s plot it with `ggraph` ([learn more about plotting nodes and
+edges](https://github.com/thomasp85/ggraph)).
 
 ``` r
 library(ggraph)
+```
 
+    ## Warning: package 'ggplot2' was built under R version 3.6.1
+
+``` r
 graph_layout <- create_layout(graph_data, layout = "kk")
 
 arrow_cap     <- circle(5, 'mm')
@@ -128,7 +141,7 @@ ggraph(graph_layout) +
   theme_graph()
 ```
 
-![](man/unnamed-chunk-4-1.png)
+![](man/unnamed-chunk-4-1.png)<!-- -->
 
 Not bad, but we can also specify the exact desired locations manually:
 
@@ -159,9 +172,9 @@ ggraph(graph_layout) +
   theme_graph()
 ```
 
-![](man/unnamed-chunk-5-1.png)
+![](man/unnamed-chunk-5-1.png)<!-- -->
 
-And now the world in our oyster! Let's pretty it up!
+And now the world in our oyster\! Let’s pretty it up\!
 
 ``` r
 ggraph(graph_layout) + 
@@ -202,9 +215,8 @@ ggraph(graph_layout) +
   theme_graph()
 ```
 
-![](man/unnamed-chunk-6-1.png)
+![](man/unnamed-chunk-6-1.png)<!-- -->
 
-Authors
--------
+## Authors
 
--   **Mattan S. Ben-Shachar** \[aut, cre\].
+  - **Mattan S. Ben-Shachar** \[aut, cre\].
