@@ -4,6 +4,8 @@
 This package literally consists of one function - a method for
 converting `lavaan` objects into `tbl_graph` objects.
 
+***This function has been copied to [`MSBMisc`](https://github.com/mattansb/MSBMisc) and will be maintained there.***
+
 ## Download and Install
 
 You can install `tidylavaan` from
